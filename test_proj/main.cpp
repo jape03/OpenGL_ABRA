@@ -224,23 +224,19 @@ void drawCityBuildings() {
 }
 
 
-
 void update(int value) {
     if (isRightMousePressed) {
         rocketRotation += 5.0f; // Rotate when right mouse is pressed
         if (rocketRotation > 360.0f) rocketRotation -= 360.0f;
     }
 
-    // Vertical movement
+    // Vertical movement:
     if (isMousePressed) {
         rocketY += 0.02f; // Move up when left mouse is pressed
-        if (rocketY > 0.8f) {
-            rocketY = -0.8f; // Reset to bottom left when reaching the top
-            rocketX = -0.9f;
-        }
+        if (rocketY > 0.95f) rocketY = 0.95f; // Prevent going above the window
     } else {
         rocketY -= 0.01f; // Fall down when mouse is not pressed
-        if (rocketY < -0.8f) rocketY = -0.8f; // Restrict rocket's lowest point
+        if (rocketY < -0.95f) rocketY = -0.95f; // Prevent going below the window
     }
 
     // Constant horizontal movement
@@ -249,7 +245,7 @@ void update(int value) {
     // Check if the airplane is off the right side of the screen
     if (rocketX > 1.0f) {
         rocketX = -0.9f;   // Reset to the default X position
-        rocketY = -0.8f;   // Reset to the default Y position
+        rocketY = 0.0f;    // Reset to the default Y position (within the window bounds)
         rocketRotation = 0.0f; // Reset to the default orientation
     }
 
@@ -357,6 +353,5 @@ int main(int argc, char** argv) {
     glutMainLoop();
     return 0;
 }
-
 
 
