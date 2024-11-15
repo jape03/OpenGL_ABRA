@@ -14,6 +14,7 @@ float rocketX = -0.9f;
 float rocketRotation = 0.0f;
 float cloudX = 0.5f;
 float buildingScale = 1.0f; // Declare this variable
+float moveXBuildings = 0.0f;
 float sunScale = 0.8f;      // Scale for the sun
 float sunRotation = 0.0f;
 bool isMousePressed = false;
@@ -91,8 +92,6 @@ void drawAirplane() {
 
     glPopMatrix();
 }
-
-
 
 void drawFullSun() {
     glPushMatrix();
@@ -447,124 +446,171 @@ void drawCityClouds() {
 }
 
 void drawCityBuildings() {
-   // Building 1
-	glPushMatrix();
-	glTranslatef(-0.8f, -0.6f, 0.0f); // Position
-	glScalef(0.15f, 0.6f, 1.0f);       // Scale
-	glColor3f(0.5f, 0.5f, 0.5f);      // Gray
-	glBegin(GL_QUADS);
-	glVertex2f(-0.5f, -1.0f);
-	glVertex2f(0.5f, -1.0f);
-	glVertex2f(0.5f, 0.0f);
-	glVertex2f(-0.5f, 0.0f);
-	glEnd();
-	glPopMatrix();
-	
-	// Building 2
-	glPushMatrix();
-	glTranslatef(-0.4f, -0.8f, 0.0f);
-	glScalef(0.15f, 0.8f, 1.0f);
-	glColor3f(0.6f, 0.6f, 0.6f);
-	glBegin(GL_QUADS);
-	glVertex2f(-0.5f, -1.0f);
-	glVertex2f(0.5f, -1.0f);
-	glVertex2f(0.5f, 0.0f);
-	glVertex2f(-0.5f, 0.0f);
-	glEnd();
-	glPopMatrix();
-	
-	// Building 3
-	glPushMatrix();
-	glTranslatef(0.0f, -0.5f, 0.0f);
-	glScalef(0.15f, 0.5f, 1.0f);
-	glColor3f(0.4f, 0.4f, 0.4f);
-	glBegin(GL_QUADS);
-	glVertex2f(-0.5f, -1.0f);
-	glVertex2f(0.5f, -1.0f);
-	glVertex2f(0.5f, 0.0f);
-	glVertex2f(-0.5f, 0.0f);
-	glEnd();
-	glPopMatrix();
-	
-	// Building 4
-	glPushMatrix();
-	glTranslatef(0.6f, -0.7f, 0.0f);
-	glScalef(0.15f, 0.7f, 1.0f);
-	glColor3f(0.7f, 0.7f, 0.7f);
-	glBegin(GL_QUADS);
-	glVertex2f(-0.5f, -1.0f);
-	glVertex2f(0.5f, -1.0f);
-	glVertex2f(0.5f, 0.0f);
-	glVertex2f(-0.5f, 0.0f);
-	glEnd();
-	glPopMatrix();
-	
-	// Building 5 (Overlapping)
-	glPushMatrix();
-	glTranslatef(-0.7f, -0.5f, 0.0f); 
-	glScalef(0.2f, 0.5f, 1.0f);
-	glColor3f(0.8f, 0.8f, 0.8f); // Lighter gray
-	glBegin(GL_QUADS);
-	glVertex2f(-0.5f, -1.0f);
-	glVertex2f(0.5f, -1.0f);
-	glVertex2f(0.5f, 0.0f);
-	glVertex2f(-0.5f, 0.0f);
-	glEnd();
-	glPopMatrix();
-	
-	// Building 6 (Overlapping)
-	glPushMatrix();
-	glTranslatef(0.4f, -0.6f, 0.0f);
-	glScalef(0.18f, 0.7f, 1.0f);
-	glColor3f(0.55f, 0.55f, 0.55f); // Medium gray
-	glBegin(GL_QUADS);
-	glVertex2f(-0.5f, -1.0f);
-	glVertex2f(0.5f, -1.0f);
-	glVertex2f(0.5f, 0.0f);
-	glVertex2f(-0.5f, 0.0f);
-	glEnd();
-	glPopMatrix();
-	
-	// Building 7 (Overlapping)
-	glPushMatrix();
-	glTranslatef(-0.3f, -0.3f, 0.0f); 
-	glScalef(0.12f, 0.9f, 1.0f);
-	glColor3f(0.9f, 0.9f, 0.9f); // Very light gray
-	glBegin(GL_QUADS);
-	glVertex2f(-0.5f, -1.0f);
-	glVertex2f(0.5f, -1.0f);
-	glVertex2f(0.5f, 0.0f);
-	glVertex2f(-0.5f, 0.0f);
-	glEnd();
-	glPopMatrix();
-	
-	// Building 8 (Overlapping)
-	glPushMatrix();
-	glTranslatef(0.8f, -0.4f, 0.0f);
-	glScalef(0.16f, 0.65f, 1.0f);
-	glColor3f(0.75f, 0.75f, 0.75f); // Grayish white
-	glBegin(GL_QUADS);
-	glVertex2f(-0.5f, -1.0f);
-	glVertex2f(0.5f, -1.0f);
-	glVertex2f(0.5f, 0.0f);
-	glVertex2f(-0.5f, 0.0f);
-	glEnd();
-	glPopMatrix();
-	
-	// Building 9 (Overlapping)
-	glPushMatrix();
-	glTranslatef(-0.1f, -0.9f, 0.0f); 
-	glScalef(0.17f, 0.6f, 1.0f);
-	glColor3f(0.3f, 0.3f, 0.3f); // Dark gray
-	glBegin(GL_QUADS);
-	glVertex2f(-0.5f, -1.0f);
-	glVertex2f(0.5f, -1.0f);
-	glVertex2f(0.5f, 0.0f);
-	glVertex2f(-0.5f, 0.0f);
-	glEnd();
-	glPopMatrix();
+    glPushMatrix();
 
+    glTranslatef(moveXBuildings, 0.0f, 0.0f); // Move to the left
+
+    // First set of buildings (Original)
+    // Building 1
+    glPushMatrix();
+    glTranslatef(-0.8f, -0.6f, 0.0f); // Position
+    glScalef(0.15f, 0.6f, 1.0f);       // Scale
+    glColor3f(0.5f, 0.5f, 0.5f);      // Gray
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    // Building 2
+    glPushMatrix();
+    glTranslatef(-0.4f, -0.8f, 0.0f);
+    glScalef(0.15f, 0.8f, 1.0f);
+    glColor3f(0.6f, 0.6f, 0.6f);
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    // Building 3
+    glPushMatrix();
+    glTranslatef(0.0f, -0.5f, 0.0f);
+    glScalef(0.15f, 0.5f, 1.0f);
+    glColor3f(0.4f, 0.4f, 0.4f);
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    // Building 4
+    glPushMatrix();
+    glTranslatef(0.6f, -0.7f, 0.0f);
+    glScalef(0.15f, 0.7f, 1.0f);
+    glColor3f(0.7f, 0.7f, 0.7f);
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    // Building 5
+    glPushMatrix();
+    glTranslatef(-0.7f, -0.5f, 0.0f);
+    glScalef(0.2f, 0.5f, 1.0f);
+    glColor3f(0.8f, 0.8f, 0.8f); // Lighter gray
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    // Building 6
+    glPushMatrix();
+    glTranslatef(0.4f, -0.6f, 0.0f);
+    glScalef(0.18f, 0.7f, 1.0f);
+    glColor3f(0.55f, 0.55f, 0.55f); // Medium gray
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    // Building 7
+    glPushMatrix();
+    glTranslatef(-0.3f, -0.3f, 0.0f); 
+    glScalef(0.12f, 0.9f, 1.0f);
+    glColor3f(0.9f, 0.9f, 0.9f); // Very light gray
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    // Building 8
+    glPushMatrix();
+    glTranslatef(0.8f, -0.4f, 0.0f);
+    glScalef(0.16f, 0.65f, 1.0f);
+    glColor3f(0.75f, 0.75f, 0.75f); // Grayish white
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    // Building 9
+    glPushMatrix();
+    glTranslatef(-0.1f, -0.9f, 0.0f); 
+    glScalef(0.17f, 0.6f, 1.0f);
+    glColor3f(0.3f, 0.3f, 0.3f); // Dark gray
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    // Building 10 
+    glPushMatrix();
+    glTranslatef(0.7f, -0.8f, 0.0f);  
+    glScalef(0.14f, 1.0f, 1.0f);     
+    glColor3f(0.6f, 0.6f, 0.6f);      
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    // Building 11 
+    glPushMatrix();
+    glTranslatef(0.85f, -0.9f, 0.0f);  
+    glScalef(0.15f, 1.0f, 1.0f);     
+    glColor3f(0.5f, 0.5f, 0.5f);      
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    // Building 12 
+    glPushMatrix();
+    glTranslatef(1.0f, -0.7f, 0.0f);  
+    glScalef(0.18f, 1.0f, 1.0f);     
+    glColor3f(0.7f, 0.7f, 0.7f);      
+    glBegin(GL_QUADS);
+    glVertex2f(-0.5f, -1.0f);
+    glVertex2f(0.5f, -1.0f);
+    glVertex2f(0.5f, 0.0f);
+    glVertex2f(-0.5f, 0.0f);
+    glEnd();
+    glPopMatrix();
+
+    glPopMatrix();
 }
+
+
 
 void update(int value) {
     // Rotate the rocket when the right mouse button is pressed
@@ -590,7 +636,12 @@ void update(int value) {
     // Move the cloud
     cloudX -= 0.01f;
     if (cloudX < -4.5f) cloudX = 1.2f;
-
+    
+   // Move the buildings
+	moveXBuildings -= 0.025f; 
+	if (moveXBuildings < -1.98f) {
+	    moveXBuildings = 1.65f;
+	}
     glutPostRedisplay();
     glutTimerFunc(16, update, 0); // Approximately 60 FPS
 }
