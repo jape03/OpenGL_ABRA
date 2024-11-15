@@ -452,7 +452,7 @@ void drawCityBuildings() {
     // First set of buildings 
     // Building 1
 	glPushMatrix();
-	glTranslatef(-0.8f, -0.6f, 0.0f); 
+	glTranslatef(-0.84f, -0.6f, 0.0f); 
 	glScalef(0.15f, 0.6f, 1.0f);       
 	glColor3f(0.5f, 0.5f, 0.5f);      
 	
