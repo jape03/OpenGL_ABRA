@@ -14,7 +14,7 @@ float rocketX = -0.9f;
 float rocketRotation = 0.0f;
 float cloudX = 0.5f;
 float buildingScale = 1.0f; // Declare this variable
-float sunScale = 1.0f;      // Scale for the sun
+float sunScale = 0.8f;      // Scale for the sun
 float sunRotation = 0.0f;
 bool isMousePressed = false;
 bool isRightMousePressed = false;
@@ -43,19 +43,28 @@ void drawAirplane() {
     glRotatef(rocketRotation, 0.0f, 0.0f, 1.0f);
 
     // Scale down the airplane
-    glScalef(0.5f, 0.5f, 1.0f); // Reduce the size to 50%
+    glScalef(0.5f, 0.5f, 1.0f); 
 
-    // Draw the body (main fuselage)
+    // Draw the body
     glColor3f(1.0f, 0.8f, 0.0f); // Golden yellow
     glBegin(GL_QUADS);
-    glVertex2f(-0.2f, -0.05f);  // Bottom-left
-    glVertex2f(0.2f, -0.05f);   // Bottom-right
-    glVertex2f(0.2f, 0.05f);    // Top-right
-    glVertex2f(-0.2f, 0.05f);   // Top-left
+	glVertex2f(-0.2f, -0.05f);  // Bottom-left 
+	glVertex2f(0.14f, -0.05f);   // Bottom-right
+	glVertex2f(0.14f, 0.05f);    // Top-right 
+	glVertex2f(-0.2f, 0.05f);   // Top-left 
     glEnd();
+    
+    // Draw the nose 
+	glColor3f(1.0f, 0.8f, 0.0f);  // Golden yellow
+	glBegin(GL_POLYGON);
+	for (int i = 0; i <= 180; i++) {
+	    float angle = i * 3.14159f / 180.0f;
+	    glVertex2f(0.11f + 0.1f * cos(angle), -0.05f + 0.1f * sin(angle)); 
+	}
+	glEnd();
 
     // Draw the cockpit (semi-circle)
-    glColor3f(1.0f, 0.9f, 0.6f); // Light gold
+    glColor3f(0.678f, 0.847f, 0.902f); // Light blue
     glBegin(GL_POLYGON);
     for (int i = 0; i <= 180; i++) {
         float angle = i * 3.14159f / 180.0f;
@@ -64,7 +73,7 @@ void drawAirplane() {
     glEnd();
 
     // Draw the tail (vertical stabilizer)
-    glColor3f(1.0f, 0.8f, 0.0f); // Golden yellow
+    glColor3f(0.5f, 0.5f, 0.5f);  // Golden yellow
     glBegin(GL_QUADS);
     glVertex2f(-0.2f, 0.0f);     // Bottom-left
     glVertex2f(-0.15f, 0.0f);    // Bottom-right
@@ -72,186 +81,515 @@ void drawAirplane() {
     glVertex2f(-0.2f, 0.1f);     // Top-left
     glEnd();
 
-    // Draw the wings (move to the tail)
-    glColor3f(1.0f, 0.7f, 0.0f); // Orange
-    glBegin(GL_TRIANGLES);
-    glVertex2f(-0.15f, 0.0f);    // Base-center (left wing)
-    glVertex2f(-0.3f, -0.15f);   // Bottom-left
-    glVertex2f(-0.15f, -0.05f);  // Near the tail
-    glEnd();
-
-    glBegin(GL_TRIANGLES);
-    glVertex2f(-0.15f, 0.0f);    // Base-center (right wing)
-    glVertex2f(-0.3f, 0.15f);    // Top-left
-    glVertex2f(-0.15f, 0.05f);   // Near the tail
-    glEnd();
-
-    // Draw the propeller (front of airplane)
-    glColor3f(0.8f, 0.8f, 0.8f); // Gray
-    glBegin(GL_LINES);
-    glVertex2f(0.2f, 0.0f);      // Center
-    glVertex2f(0.2f, 0.1f);      // Top-right
-    glVertex2f(0.2f, 0.0f);      // Center
-    glVertex2f(0.2f, -0.1f);     // Bottom-right
-    glEnd();
-
     // Optional: Add a flame for thrust
     glColor3f(1.0f, 0.4f, 0.0f); // Orange flame
     glBegin(GL_TRIANGLES);
-    glVertex2f(-0.22f, -0.02f);  // Base-left
-    glVertex2f(-0.22f, 0.02f);   // Base-right
-    glVertex2f(-0.3f, 0.0f);     // Tip
+    glVertex2f(-0.21f, -0.05f);  // Base-left
+    glVertex2f(-0.21f, 0.05f);   // Base-right
+    glVertex2f(-0.4f, 0.0f);     // Tip
     glEnd();
 
     glPopMatrix();
 }
+
 
 
 void drawFullSun() {
     glPushMatrix();
 
     // Scale and position the sun at the top-left corner
-    glTranslatef(-0.8f, 0.8f, 0.0f); // Adjust position for a full sun
-    glScalef(sunScale, sunScale, 1.0f); // Apply scaling for sun size
+    glTranslatef(-0.8f, 0.8f, 0.0f); 
+    glScalef(sunScale, sunScale, 1.0f); 
 
     // Draw the full sun (circle)
     glColor3f(1.0f, 1.0f, 0.0f); // Yellow sun
     glBegin(GL_POLYGON);
-    for (int i = 0; i < 360; i++) { // Full circle (360 degrees)
+
+    for (int i = 0; i < 360; i++) { 
         float angle = i * 3.14159f / 180.0f;
-        glVertex2f(0.3f * cos(angle), 0.3f * sin(angle)); // Radius of 0.3f
+        glVertex2f(0.28f * cos(angle), 0.5f * sin(angle));
     }
     glEnd();
 
-    // Add sun rays
-    glColor3f(1.0f, 0.6f, 0.0f); // Orange rays
-    for (int i = 0; i < 360; i += 30) { // Create rays every 30 degrees
-        float angle = i * 3.14159f / 180.0f;
+     // Draw sun rays
+    glColor3f(1.0f, 0.65f, 0.0f); // Orange 
+
+    int numRays = 20; // Number of rays
+    float rayAngleStep = 360.0f / numRays; // Angle
+
+    // Acute triangle measurements
+    float sunRadiusX = 0.27f;  // Horizontal radius of the sun
+    float sunRadiusY = 0.51f;   // Vertical radius of the sun
+    float baseDistance = 0.03f; // Distance from the sun to the base of the rays
+    float rayGap = 0.03f;      // gap between rays
+    float rayHeight = 0.08f;    // Height of the triangle
+
+    for (int i = 0; i < numRays; i++) {
+        // Adjust the angle for spacing between rays
+        float startAngle = i * rayAngleStep * 3.14159f / 180.0f;
+        float endAngle = (i + 1) * rayAngleStep * 3.14159f / 180.0f - rayGap; 
+        float midAngle = (startAngle + endAngle) / 2.0f; // Midpoint angle for the tip
+
+        // Base points on the sun's circumference 
+        float baseX1 = (sunRadiusX + baseDistance) * cos(startAngle);
+        float baseY1 = (sunRadiusY + baseDistance) * sin(startAngle);
+
+        float baseX2 = (sunRadiusX + baseDistance) * cos(endAngle);
+        float baseY2 = (sunRadiusY + baseDistance) * sin(endAngle);
+
+        // Tip of the triangle
+        float tipX = (sunRadiusX + rayHeight + baseDistance) * cos(midAngle);
+        float tipY = (sunRadiusY + rayHeight + baseDistance) * sin(midAngle);
+
+        // Draw triangle 
         glBegin(GL_TRIANGLES);
-        glVertex2f(0.3f * cos(angle), 0.3f * sin(angle)); // Base of ray (on the sun circle)
-        glVertex2f(0.4f * cos(angle - 0.05f), 0.4f * sin(angle - 0.05f)); // One side of the ray
-        glVertex2f(0.4f * cos(angle + 0.05f), 0.4f * sin(angle + 0.05f)); // Other side of the ray
+        glVertex2f(baseX1, baseY1); // Base point 1
+        glVertex2f(baseX2, baseY2); // Base point 2
+        glVertex2f(tipX, tipY);     // Tip point
         glEnd();
     }
 
     glPopMatrix();
 }
-
 
 void drawCityClouds() {
+    glColor3f(1.0f, 1.0f, 1.0f); // white
     // Cloud 1
     glPushMatrix();
-    glTranslatef(-0.6f + cloudX, 0.8f, 0.0f);
-    glColor3f(1.0f, 1.0f, 1.0f);
-    for (int i = -1; i <= 1; i++) {
-        glBegin(GL_POLYGON);
-        for (int j = 0; j < 360; j += 30) {
-            float angle = j * 3.14159f / 180.0f;
-            glVertex2f(0.1f * cos(angle) + i * 0.1f, 0.05f * sin(angle));
-        }
-        glEnd();
+    glTranslatef(-0.6f + cloudX, 0.55f, 0.0f); 
+
+    // Left circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.15f * cos(angle) - 0.2f, 0.15f * sin(angle));
     }
+    glEnd();
+
+    // Right circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.15f * cos(angle) + 0.2f, 0.15f * sin(angle));
+    }
+    glEnd();
+
+    // Center top circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.2f * cos(angle), 0.25f * sin(angle) + 0.15f);
+    }
+    glEnd();
+
+    // Bottom rounded rectangle for cloud base
+    glBegin(GL_POLYGON);
+    glVertex2f(-0.25f, -0.05f);
+    glVertex2f(0.25f, -0.05f);
+    glVertex2f(0.25f, 0.05f);
+    glVertex2f(-0.25f, 0.05f);
+    glEnd();
+
+    // Flat rectangle in the center
+    glBegin(GL_QUADS);
+    glVertex2f(-0.2f, -0.15f); 
+    glVertex2f(0.2f, -0.15f);  
+    glVertex2f(0.2f, 0.05f);   
+    glVertex2f(-0.2f, 0.05f);  
+    glEnd();
+
     glPopMatrix();
 
-    // Cloud 2
+    // Cloud 2 
     glPushMatrix();
-    glTranslatef(0.4f + cloudX, 0.7f, 0.0f);
-    glColor3f(1.0f, 1.0f, 1.0f);
-    for (int i = -1; i <= 1; i++) {
-        glBegin(GL_POLYGON);
-        for (int j = 0; j < 360; j += 30) {
-            float angle = j * 3.14159f / 180.0f;
-            glVertex2f(0.1f * cos(angle) + i * 0.1f, 0.05f * sin(angle));
-        }
-        glEnd();
-    }
-    glPopMatrix();
-}
+    glTranslatef(0.2f + cloudX, 0.25f, -0.5f); 
 
+    // Left circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.12f * cos(angle) - 0.15f, 0.12f * sin(angle)); 
+    }
+    glEnd();
+
+    // Right circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.12f * cos(angle) + 0.15f, 0.12f * sin(angle));
+    }
+    glEnd();
+
+    // Center top circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.15f * cos(angle), 0.2f * sin(angle) + 0.1f); 
+    }
+    glEnd();
+
+    // Flat rectangle in the center
+    glBegin(GL_QUADS);
+    glVertex2f(-0.17f, -0.12f); 
+    glVertex2f(0.17f, -0.12f); 
+    glVertex2f(0.18f, 0.11f);  
+    glVertex2f(-0.18f, 0.11f);  
+    glEnd();
+
+    glPopMatrix();
+
+    // Cloud 3
+    glPushMatrix();
+    glTranslatef(0.8f + cloudX, 0.75f, -1.0f); 
+
+    // Left circle 
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.08f * cos(angle) - 0.1f, 0.08f * sin(angle)); 
+    }
+    glEnd();
+
+    // Right circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.08f * cos(angle) + 0.1f, 0.08f * sin(angle));
+    }
+    glEnd();
+
+    // Center top circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.1f * cos(angle), 0.15f * sin(angle) + 0.07f);
+    }
+    glEnd();
+
+    // Flat rectangle in the center 
+    glBegin(GL_QUADS);
+    glVertex2f(-0.1f, -0.08f);  
+    glVertex2f(0.1f, -0.08f);  
+    glVertex2f(0.1f, 0.05f);    
+    glVertex2f(-0.1f, 0.05f);   
+    glEnd();
+
+    glPopMatrix();
+    
+    // Cloud 4
+    glPushMatrix();
+    glTranslatef(1.8f + cloudX, 0.55f, 0.0f); 
+
+    // Left circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.15f * cos(angle) - 0.2f, 0.15f * sin(angle));
+    }
+    glEnd();
+
+    // Right circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.15f * cos(angle) + 0.2f, 0.15f * sin(angle));
+    }
+    glEnd();
+
+    // Center top circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.2f * cos(angle), 0.25f * sin(angle) + 0.15f);
+    }
+    glEnd();
+
+    // Bottom rounded rectangle for cloud base
+    glBegin(GL_POLYGON);
+    glVertex2f(-0.25f, -0.05f);
+    glVertex2f(0.25f, -0.05f);
+    glVertex2f(0.25f, 0.05f);
+    glVertex2f(-0.25f, 0.05f);
+    glEnd();
+
+    // Flat rectangle in the center
+    glBegin(GL_QUADS);
+    glVertex2f(-0.2f, -0.15f);
+    glVertex2f(0.2f, -0.15f);  
+    glVertex2f(0.2f, 0.05f);   
+    glVertex2f(-0.2f, 0.05f);  
+    glEnd();
+
+    glPopMatrix();
+    
+    // Cloud 5 
+    glPushMatrix();
+    glTranslatef(2.8f + cloudX, 0.25f, -0.5f); 
+
+    // Left circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.12f * cos(angle) - 0.15f, 0.12f * sin(angle)); 
+    }
+    glEnd();
+
+    // Right circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.12f * cos(angle) + 0.15f, 0.12f * sin(angle));
+    }
+    glEnd();
+
+    // Center top circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.15f * cos(angle), 0.2f * sin(angle) + 0.1f); 
+    }
+    glEnd();
+
+    // Flat rectangle in the center
+    glBegin(GL_QUADS);
+    glVertex2f(-0.17f, -0.12f); 
+    glVertex2f(0.17f, -0.12f); 
+    glVertex2f(0.18f, 0.11f);   
+    glVertex2f(-0.18f, 0.11f);  
+    glEnd();
+
+    glPopMatrix();
+
+    // Cloud 6
+    glPushMatrix();
+    glTranslatef(3.3f + cloudX, 0.75f, -1.0f);
+
+    // Left circle 
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.08f * cos(angle) - 0.1f, 0.08f * sin(angle));
+    }
+    glEnd();
+
+    // Right circle 
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.08f * cos(angle) + 0.1f, 0.08f * sin(angle)); 
+    }
+    glEnd();
+
+    // Center top circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.1f * cos(angle), 0.15f * sin(angle) + 0.07f); 
+    }
+    glEnd();
+
+    // Flat rectangle in the center 
+    glBegin(GL_QUADS);
+    glVertex2f(-0.1f, -0.08f);  
+    glVertex2f(0.1f, -0.08f);   
+    glVertex2f(0.1f, 0.05f);    
+    glVertex2f(-0.1f, 0.05f); 
+    glEnd();
+
+    glPopMatrix();
+    
+    // Cloud 7
+    glPushMatrix();
+    glTranslatef(5.1f + cloudX, 0.55f, 0.0f); 
+
+    // Left circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.15f * cos(angle) - 0.2f, 0.15f * sin(angle));
+    }
+    glEnd();
+
+    // Right circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.15f * cos(angle) + 0.2f, 0.15f * sin(angle));
+    }
+    glEnd();
+
+    // Center top circle
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j += 10) {
+        float angle = j * 3.14159f / 180.0f;
+        glVertex2f(0.2f * cos(angle), 0.25f * sin(angle) + 0.15f);
+    }
+    glEnd();
+
+    // Bottom rounded rectangle for cloud base
+    glBegin(GL_POLYGON);
+    glVertex2f(-0.25f, -0.05f);
+    glVertex2f(0.25f, -0.05f);
+    glVertex2f(0.25f, 0.05f);
+    glVertex2f(-0.25f, 0.05f);
+    glEnd();
+
+    // Flat rectangle in the center
+    glBegin(GL_QUADS);
+    glVertex2f(-0.2f, -0.15f); 
+    glVertex2f(0.2f, -0.15f); 
+    glVertex2f(0.2f, 0.05f);   
+    glVertex2f(-0.2f, 0.05f); 
+    glEnd();
+
+    glPopMatrix();
+    
+}
 
 void drawCityBuildings() {
-    // Building 1
-    glPushMatrix();
-    glTranslatef(-0.8f, -0.6f, 0.0f); // Position the building
-    glScalef(0.2f, 0.6f, 1.0f);       // Scale for height and width
-    glColor3f(0.5f, 0.5f, 0.5f);      // Gray color for building
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
+   // Building 1
+	glPushMatrix();
+	glTranslatef(-0.8f, -0.6f, 0.0f); // Position
+	glScalef(0.15f, 0.6f, 1.0f);       // Scale
+	glColor3f(0.5f, 0.5f, 0.5f);      // Gray
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	glPopMatrix();
+	
+	// Building 2
+	glPushMatrix();
+	glTranslatef(-0.4f, -0.8f, 0.0f);
+	glScalef(0.15f, 0.8f, 1.0f);
+	glColor3f(0.6f, 0.6f, 0.6f);
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	glPopMatrix();
+	
+	// Building 3
+	glPushMatrix();
+	glTranslatef(0.0f, -0.5f, 0.0f);
+	glScalef(0.15f, 0.5f, 1.0f);
+	glColor3f(0.4f, 0.4f, 0.4f);
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	glPopMatrix();
+	
+	// Building 4
+	glPushMatrix();
+	glTranslatef(0.6f, -0.7f, 0.0f);
+	glScalef(0.15f, 0.7f, 1.0f);
+	glColor3f(0.7f, 0.7f, 0.7f);
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	glPopMatrix();
+	
+	// Building 5 (Overlapping)
+	glPushMatrix();
+	glTranslatef(-0.7f, -0.5f, 0.0f); 
+	glScalef(0.2f, 0.5f, 1.0f);
+	glColor3f(0.8f, 0.8f, 0.8f); // Lighter gray
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	glPopMatrix();
+	
+	// Building 6 (Overlapping)
+	glPushMatrix();
+	glTranslatef(0.4f, -0.6f, 0.0f);
+	glScalef(0.18f, 0.7f, 1.0f);
+	glColor3f(0.55f, 0.55f, 0.55f); // Medium gray
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	glPopMatrix();
+	
+	// Building 7 (Overlapping)
+	glPushMatrix();
+	glTranslatef(-0.3f, -0.3f, 0.0f); 
+	glScalef(0.12f, 0.9f, 1.0f);
+	glColor3f(0.9f, 0.9f, 0.9f); // Very light gray
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	glPopMatrix();
+	
+	// Building 8 (Overlapping)
+	glPushMatrix();
+	glTranslatef(0.8f, -0.4f, 0.0f);
+	glScalef(0.16f, 0.65f, 1.0f);
+	glColor3f(0.75f, 0.75f, 0.75f); // Grayish white
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	glPopMatrix();
+	
+	// Building 9 (Overlapping)
+	glPushMatrix();
+	glTranslatef(-0.1f, -0.9f, 0.0f); 
+	glScalef(0.17f, 0.6f, 1.0f);
+	glColor3f(0.3f, 0.3f, 0.3f); // Dark gray
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	glPopMatrix();
 
-    // Building 2
-    glPushMatrix();
-    glTranslatef(-0.4f, -0.8f, 0.0f);
-    glScalef(0.3f, 0.8f, 1.0f);
-    glColor3f(0.6f, 0.6f, 0.6f);
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
-
-    // Building 3
-    glPushMatrix();
-    glTranslatef(0.0f, -0.5f, 0.0f);
-    glScalef(0.4f, 0.5f, 1.0f);
-    glColor3f(0.4f, 0.4f, 0.4f);
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
-
-    // Building 4
-    glPushMatrix();
-    glTranslatef(0.6f, -0.7f, 0.0f);
-    glScalef(0.3f, 0.7f, 1.0f);
-    glColor3f(0.7f, 0.7f, 0.7f);
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
 }
 
-
 void update(int value) {
+    // Rotate the rocket when the right mouse button is pressed
     if (isRightMousePressed) {
         rocketRotation += 5.0f; // Rotate when right mouse is pressed
         if (rocketRotation > 360.0f) rocketRotation -= 360.0f;
     }
 
-    // Vertical movement:
+    // Movement logic when left mouse button is pressed
     if (isMousePressed) {
-        rocketY += 0.02f; // Move up when left mouse is pressed
+        rocketX += 0.01f; // Move forward
+        rocketY += 0.02f; // Move up
+        if (rocketX >= 0.8f) rocketX = 0.8f; // Prevent moving too far forward
         if (rocketY > 0.95f) rocketY = 0.95f; // Prevent going above the window
     } else {
-        rocketY -= 0.01f; // Fall down when mouse is not pressed
-        if (rocketY < -0.95f) rocketY = -0.95f; // Prevent going below the window
-    }
-
-    // Constant horizontal movement
-    rocketX += 0.01f;
-
-    // Check if the airplane is off the right side of the screen
-    if (rocketX > 1.0f) {
-        rocketX = -0.9f;   // Reset to the default X position
-        rocketY = 0.0f;    // Reset to the default Y position (within the window bounds)
-        rocketRotation = 0.0f; // Reset to the default orientation
+        // When the left mouse button is released, move backward and fall down
+        rocketX -= 0.003f; // Slowly move backward
+        rocketY -= 0.009f; // Slowly fall down
+        if (rocketX <= -0.8f) rocketX = -0.8f; // Prevent moving too far backward
+        if (rocketY < -0.8f) rocketY = -0.8f; // Prevent going below the window
     }
 
     // Move the cloud
     cloudX -= 0.01f;
-    if (cloudX < -1.2f) cloudX = 1.2f;
+    if (cloudX < -4.5f) cloudX = 1.2f;
 
     glutPostRedisplay();
     glutTimerFunc(16, update, 0); // Approximately 60 FPS
@@ -324,7 +662,7 @@ void display() {
     drawAirplane();
 
     // Draw city clouds
-    drawCityClouds();
+    drawCityClouds();	
 
     glutSwapBuffers();
 }
@@ -353,5 +691,3 @@ int main(int argc, char** argv) {
     glutMainLoop();
     return 0;
 }
-
-
