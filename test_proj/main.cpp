@@ -15,7 +15,7 @@ float rocketRotation = 0.0f;
 float cloudX = 0.5f;
 float buildingScale = 1.0f; // Declare this variable
 float moveXBuildings = 0.0f;
-float sunScale = 0.8f;      // Scale for the sun
+float rocketScale = 1.0f;      // Scale for the rocket
 float sunRotation = 0.0f;
 bool isMousePressed = false;
 bool isRightMousePressed = false;
@@ -39,8 +39,9 @@ void drawBackground() {
 void drawAirplane() {
     glPushMatrix();
 
-    // Translate and rotate the airplane
+    // Translate and rotate the rocket
     glTranslatef(rocketX, rocketY, 0.0f);
+    glScalef(rocketScale, rocketScale, 2.0f);
     glRotatef(rocketRotation, 0.0f, 0.0f, 1.0f);
 
     // Scale down the airplane
@@ -97,8 +98,7 @@ void drawFullSun() {
     glPushMatrix();
 
     // Scale and position the sun at the top-left corner
-    glTranslatef(-0.8f, 0.8f, 0.0f); 
-    glScalef(sunScale, sunScale, 1.0f); 
+    glTranslatef(-0.9f, 0.8f, 0.0f); 
 
     // Draw the full sun (circle)
     glColor3f(1.0f, 1.0f, 0.0f); // Yellow sun
@@ -447,168 +447,748 @@ void drawCityClouds() {
 
 void drawCityBuildings() {
     glPushMatrix();
+    glTranslatef(moveXBuildings, 0.0f, 0.0f); 
 
-    glTranslatef(moveXBuildings, 0.0f, 0.0f); // Move to the left
-
-    // First set of buildings (Original)
+    // First set of buildings 
     // Building 1
-    glPushMatrix();
-    glTranslatef(-0.8f, -0.6f, 0.0f); // Position
-    glScalef(0.15f, 0.6f, 1.0f);       // Scale
-    glColor3f(0.5f, 0.5f, 0.5f);      // Gray
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
+	glPushMatrix();
+	glTranslatef(-0.8f, -0.6f, 0.0f); 
+	glScalef(0.15f, 0.6f, 1.0f);       
+	glColor3f(0.5f, 0.5f, 0.5f);      
+	
+	// Building structure
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	
+	// Adding windows
+	glColor3f(0.8f, 0.9f, 1.0f); // Light blue color for windows
+		
+	// Window 1
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.8f);
+	glVertex2f(-0.1f, -0.8f);
+	glVertex2f(-0.1f, -0.6f);
+	glVertex2f(-0.3f, -0.6f);
+	glEnd();
+	
+	// Window 2
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.8f);
+	glVertex2f(0.3f, -0.8f);
+	glVertex2f(0.3f, -0.6f);
+	glVertex2f(0.1f, -0.6f);
+	glEnd();
+	
+	// Window 3
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.4f);
+	glVertex2f(-0.1f, -0.4f);
+	glVertex2f(-0.1f, -0.2f);
+	glVertex2f(-0.3f, -0.2f);
+	glEnd();
+	
+	// Window 4
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.4f);
+	glVertex2f(0.3f, -0.4f);
+	glVertex2f(0.3f, -0.2f);
+	glVertex2f(0.1f, -0.2f);
+	glEnd();
+	
+	glPopMatrix();
 
     // Building 2
-    glPushMatrix();
-    glTranslatef(-0.4f, -0.8f, 0.0f);
-    glScalef(0.15f, 0.8f, 1.0f);
-    glColor3f(0.6f, 0.6f, 0.6f);
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
-
+	glPushMatrix();
+	glTranslatef(-0.4f, -0.6f, 0.0f); 
+	glScalef(0.15f, 0.5f, 1.0f); 
+	glColor3f(0.6f, 0.6f, 0.6f);      
+	
+	// Building structure
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	
+	// Adding windows
+	glColor3f(0.8f, 0.9f, 1.0f); // Light blue color for windows
+	
+	// First row of windows 
+	// Window 1
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.9f); 
+	glVertex2f(-0.15f, -0.9f);
+	glVertex2f(-0.15f, -0.7f); 
+	glVertex2f(-0.35f, -0.7f);
+	glEnd();
+	
+	// Window 2
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.9f); 
+	glVertex2f(0.35f, -0.9f);
+	glVertex2f(0.35f, -0.7f); 
+	glVertex2f(0.15f, -0.7f);
+	glEnd();
+	
+	// Second row of windows 
+	// Window 3
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.6f); 
+	glVertex2f(-0.15f, -0.6f);
+	glVertex2f(-0.15f, -0.4f); 
+	glVertex2f(-0.35f, -0.4f);
+	glEnd();
+	
+	// Window 4
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.6f); 
+	glVertex2f(0.35f, -0.6f);
+	glVertex2f(0.35f, -0.4f); 
+	glVertex2f(0.15f, -0.4f);
+	glEnd();
+	
+	// Third row of windows
+	// Window 5
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.3f); 
+	glVertex2f(-0.15f, -0.3f);
+	glVertex2f(-0.15f, -0.1f); 
+	glVertex2f(-0.35f, -0.1f);
+	glEnd();
+	
+	// Window 6
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.3f); 
+	glVertex2f(0.35f, -0.3f);
+	glVertex2f(0.35f, -0.1f); 
+	glVertex2f(0.15f, -0.1f);
+	glEnd();
+	
+	glPopMatrix();
+ 
     // Building 3
-    glPushMatrix();
-    glTranslatef(0.0f, -0.5f, 0.0f);
-    glScalef(0.15f, 0.5f, 1.0f);
-    glColor3f(0.4f, 0.4f, 0.4f);
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
+	glPushMatrix();
+	glTranslatef(0.0f, -0.5f, 0.0f); 
+	glScalef(0.15f, 0.5f, 1.0f);       
+	glColor3f(0.4f, 0.4f, 0.4f);      
+	
+	// Building structure
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	
+	// Adding yellow windows
+	glColor3f(0.8f, 0.9f, 1.0f); // Light blue color for windows
+	
+	// First row of windows
+	// Window 1
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.8f);
+	glVertex2f(-0.15f, -0.8f);
+	glVertex2f(-0.15f, -0.6f);
+	glVertex2f(-0.35f, -0.6f);
+	glEnd();
+	
+	// Window 2
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.8f);
+	glVertex2f(0.35f, -0.8f);
+	glVertex2f(0.35f, -0.6f);
+	glVertex2f(0.15f, -0.6f);
+	glEnd();
+	
+	// Second row of windows
+	// Window 3
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.4f);
+	glVertex2f(-0.15f, -0.4f);
+	glVertex2f(-0.15f, -0.2f);
+	glVertex2f(-0.35f, -0.2f);
+	glEnd();
+	
+	// Window 4
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.4f);
+	glVertex2f(0.35f, -0.4f);
+	glVertex2f(0.35f, -0.2f);
+	glVertex2f(0.15f, -0.2f);
+	glEnd();
+	
+	glPopMatrix();
+
 
     // Building 4
-    glPushMatrix();
-    glTranslatef(0.6f, -0.7f, 0.0f);
-    glScalef(0.15f, 0.7f, 1.0f);
-    glColor3f(0.7f, 0.7f, 0.7f);
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
+	glPushMatrix();
+	glTranslatef(0.6f, -0.52f, 0.0f); 
+	glScalef(0.15f, 0.7f, 1.0f);       
+	glColor3f(0.7f, 0.7f, 0.7f);      
+	
+	// Building structure
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	
+	// Adding yellow windows
+	glColor3f(0.8f, 0.9f, 1.0f); // Light blue color for windows
+	
+	// First row of windows 
+	// Window 1
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.9f); 
+	glVertex2f(-0.15f, -0.9f);
+	glVertex2f(-0.15f, -0.7f); 
+	glVertex2f(-0.35f, -0.7f);
+	glEnd();
+	
+	// Window 2
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.9f); 
+	glVertex2f(0.35f, -0.9f);
+	glVertex2f(0.35f, -0.7f); 
+	glVertex2f(0.15f, -0.7f);
+	glEnd();
+	
+	// Second row of windows 
+	// Window 3
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.6f); 
+	glVertex2f(-0.15f, -0.6f);
+	glVertex2f(-0.15f, -0.4f); 
+	glVertex2f(-0.35f, -0.4f);
+	glEnd();
+	
+	// Window 4
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.6f); 
+	glVertex2f(0.35f, -0.6f);
+	glVertex2f(0.35f, -0.4f); 
+	glVertex2f(0.15f, -0.4f);
+	glEnd();
+	
+	// Third row of windows 
+	// Window 5
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.3f); 
+	glVertex2f(-0.15f, -0.3f);
+	glVertex2f(-0.15f, -0.1f); 
+	glVertex2f(-0.35f, -0.1f);
+	glEnd();
+	
+	// Window 6
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.3f); 
+	glVertex2f(0.35f, -0.3f);
+	glVertex2f(0.35f, -0.1f); 
+	glVertex2f(0.15f, -0.1f);
+	glEnd();
+	
+	glPopMatrix();
 
     // Building 5
-    glPushMatrix();
-    glTranslatef(-0.7f, -0.5f, 0.0f);
-    glScalef(0.2f, 0.5f, 1.0f);
-    glColor3f(0.8f, 0.8f, 0.8f); // Lighter gray
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
+	glPushMatrix();
+	glTranslatef(-0.7f, -0.5f, 0.0f); 
+	glScalef(0.2f, 0.5f, 1.0f);       
+	glColor3f(0.4f, 0.4f, 0.4f);      
+	
+	// Building structure
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	
+	// Adding yellow windows
+	glColor3f(0.8f, 0.9f, 1.0f); // Light blue color for windows
+	
+	// First row of windows
+	// Window 1
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.9f);
+	glVertex2f(-0.1f, -0.9f);
+	glVertex2f(-0.1f, -0.7f);
+	glVertex2f(-0.3f, -0.7f);
+	glEnd();
+	
+	// Window 2
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.9f);
+	glVertex2f(0.3f, -0.9f);
+	glVertex2f(0.3f, -0.7f);
+	glVertex2f(0.1f, -0.7f);
+	glEnd();
+	
+	// Second row of windows
+	// Window 3
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.6f);
+	glVertex2f(-0.1f, -0.6f);
+	glVertex2f(-0.1f, -0.4f);
+	glVertex2f(-0.3f, -0.4f);
+	glEnd();
+	
+	// Window 4
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.6f);
+	glVertex2f(0.3f, -0.6f);
+	glVertex2f(0.3f, -0.4f);
+	glVertex2f(0.1f, -0.4f);
+	glEnd();
+	
+	// Third row of windows
+	// Window 5
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.3f);
+	glVertex2f(-0.1f, -0.3f);
+	glVertex2f(-0.1f, -0.1f);
+	glVertex2f(-0.3f, -0.1f);
+	glEnd();
+	
+	// Window 6
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.3f);
+	glVertex2f(0.3f, -0.3f);
+	glVertex2f(0.3f, -0.1f);
+	glVertex2f(0.1f, -0.1f);
+	glEnd();
+	
+	glPopMatrix();
 
     // Building 6
-    glPushMatrix();
-    glTranslatef(0.4f, -0.6f, 0.0f);
-    glScalef(0.18f, 0.7f, 1.0f);
-    glColor3f(0.55f, 0.55f, 0.55f); // Medium gray
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
+	glPushMatrix();
+	glTranslatef(0.4f, -0.6f, 0.0f); 
+	glScalef(0.18f, 0.7f, 1.0f);       
+	glColor3f(0.55f, 0.55f, 0.55f);      
+	
+	// Building structure
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	
+	// Adding yellow windows
+	glColor3f(0.8f, 0.9f, 1.0f); // Light blue color for windows
+	
+	// First row of windows
+	// Window 1
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.9f);
+	glVertex2f(-0.15f, -0.9f);
+	glVertex2f(-0.15f, -0.7f);
+	glVertex2f(-0.35f, -0.7f);
+	glEnd();
+	
+	// Window 2
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.9f);
+	glVertex2f(0.35f, -0.9f);
+	glVertex2f(0.35f, -0.7f);
+	glVertex2f(0.15f, -0.7f);
+	glEnd();
+	
+	// Second row of windows
+	// Window 3
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.6f);
+	glVertex2f(-0.15f, -0.6f);
+	glVertex2f(-0.15f, -0.4f);
+	glVertex2f(-0.35f, -0.4f);
+	glEnd();
+	
+	// Window 4
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.6f);
+	glVertex2f(0.35f, -0.6f);
+	glVertex2f(0.35f, -0.4f);
+	glVertex2f(0.15f, -0.4f);
+	glEnd();
+	
+	// Third row of windows
+	// Window 5
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.3f);
+	glVertex2f(-0.15f, -0.3f);
+	glVertex2f(-0.15f, -0.1f);
+	glVertex2f(-0.35f, -0.1f);
+	glEnd();
+	
+	// Window 6
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.3f);
+	glVertex2f(0.35f, -0.3f);
+	glVertex2f(0.35f, -0.1f);
+	glVertex2f(0.15f, -0.1f);
+	glEnd();
+	
+	glPopMatrix();
 
     // Building 7
-    glPushMatrix();
-    glTranslatef(-0.3f, -0.3f, 0.0f); 
-    glScalef(0.12f, 0.9f, 1.0f);
-    glColor3f(0.9f, 0.9f, 0.9f); // Very light gray
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
+	glPushMatrix();
+	glTranslatef(-0.28f, -0.35f, 0.0f); 
+	glScalef(0.15f, 0.9f, 1.0f);       
+	glColor3f(0.55f, 0.55f, 0.55f);      
+	
+	// Building structure
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	
+	// Adding yellow windows
+	glColor3f(0.8f, 0.9f, 1.0f); // Light blue color for windows
+	
+	// First row of windows 
+	// Window 1
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.9f); 
+	glVertex2f(-0.1f, -0.9f);
+	glVertex2f(-0.1f, -0.7f); 
+	glVertex2f(-0.35f, -0.7f);
+	glEnd();
+	
+	// Window 2
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.9f); 
+	glVertex2f(0.35f, -0.9f);
+	glVertex2f(0.35f, -0.7f); 
+	glVertex2f(0.1f, -0.7f);
+	glEnd();
+	
+	// Second row of windows 
+	// Window 3
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.6f); 
+	glVertex2f(-0.1f, -0.6f);
+	glVertex2f(-0.1f, -0.4f); 
+	glVertex2f(-0.35f, -0.4f);
+	glEnd();
+	
+	// Window 4
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.6f); 
+	glVertex2f(0.35f, -0.6f);
+	glVertex2f(0.35f, -0.4f); 
+	glVertex2f(0.1f, -0.4f);
+	glEnd();
+	
+	// Third row of windows 
+	// Window 5
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.3f); 
+	glVertex2f(-0.1f, -0.3f);
+	glVertex2f(-0.1f, -0.1f); 
+	glVertex2f(-0.35f, -0.1f);
+	glEnd();
+	
+	// Window 6
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.3f); 
+	glVertex2f(0.35f, -0.3f);
+	glVertex2f(0.35f, -0.1f); 
+	glVertex2f(0.1f, -0.1f);
+	glEnd();
+	
+	glPopMatrix();
 
-    // Building 8
-    glPushMatrix();
-    glTranslatef(0.8f, -0.4f, 0.0f);
-    glScalef(0.16f, 0.65f, 1.0f);
-    glColor3f(0.75f, 0.75f, 0.75f); // Grayish white
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
+   // Building 8
+	glPushMatrix();
+	glTranslatef(0.8f, -0.4f, 0.0f); 
+	glScalef(0.16f, 0.65f, 1.0f);       
+	glColor3f(0.75f, 0.75f, 0.75f);      
+	
+	// Building structure
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	
+	// Adding yellow windows
+	glColor3f(0.8f, 0.9f, 1.0f); // Light blue color for windows
+	
+	// First row of windows
+	// Window 1
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.9f);
+	glVertex2f(-0.1f, -0.9f);
+	glVertex2f(-0.1f, -0.7f);
+	glVertex2f(-0.3f, -0.7f);
+	glEnd();
+	
+	// Window 2
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.9f);
+	glVertex2f(0.3f, -0.9f);
+	glVertex2f(0.3f, -0.7f);
+	glVertex2f(0.1f, -0.7f);
+	glEnd();
+	
+	// Second row of windows
+	// Window 3
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.6f);
+	glVertex2f(-0.1f, -0.6f);
+	glVertex2f(-0.1f, -0.4f);
+	glVertex2f(-0.3f, -0.4f);
+	glEnd();
+	
+	// Window 4
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.6f);
+	glVertex2f(0.3f, -0.6f);
+	glVertex2f(0.3f, -0.4f);
+	glVertex2f(0.1f, -0.4f);
+	glEnd();
+	
+	// Third row of windows
+	// Window 5
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.3f);
+	glVertex2f(-0.1f, -0.3f);
+	glVertex2f(-0.1f, -0.1f);
+	glVertex2f(-0.3f, -0.1f);
+	glEnd();
+	
+	// Window 6
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.3f);
+	glVertex2f(0.3f, -0.3f);
+	glVertex2f(0.3f, -0.1f);
+	glVertex2f(0.1f, -0.1f);
+	glEnd();
+	
+	glPopMatrix();
 
     // Building 9
-    glPushMatrix();
-    glTranslatef(-0.1f, -0.9f, 0.0f); 
-    glScalef(0.17f, 0.6f, 1.0f);
-    glColor3f(0.3f, 0.3f, 0.3f); // Dark gray
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
+	glPushMatrix();
+	glTranslatef(-0.1f, -0.7f, 0.0f); 
+	glScalef(0.17f, 0.6f, 1.0f);       
+	glColor3f(0.3f, 0.3f, 0.3f); // Dark gray for the building
+	
+	// Building structure
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	
+	// Adding yellow windows
+	glColor3f(0.8f, 0.9f, 1.0f); // Light blue color for windows
+	
+	// First row of windows
+	// Window 1
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.9f);
+	glVertex2f(-0.1f, -0.9f);
+	glVertex2f(-0.1f, -0.7f);
+	glVertex2f(-0.3f, -0.7f);
+	glEnd();
+	
+	// Window 2
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.9f);
+	glVertex2f(0.3f, -0.9f);
+	glVertex2f(0.3f, -0.7f);
+	glVertex2f(0.1f, -0.7f);
+	glEnd();
+	
+	// Second row of windows
+	// Window 3
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.6f);
+	glVertex2f(-0.1f, -0.6f);
+	glVertex2f(-0.1f, -0.4f);
+	glVertex2f(-0.3f, -0.4f);
+	glEnd();
+	
+	// Window 4
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.6f);
+	glVertex2f(0.3f, -0.6f);
+	glVertex2f(0.3f, -0.4f);
+	glVertex2f(0.1f, -0.4f);
+	glEnd();
+	
+	// Third row of windows
+	// Window 5
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.3f);
+	glVertex2f(-0.1f, -0.3f);
+	glVertex2f(-0.1f, -0.1f);
+	glVertex2f(-0.3f, -0.1f);
+	glEnd();
+	
+	// Window 6
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.3f);
+	glVertex2f(0.3f, -0.3f);
+	glVertex2f(0.3f, -0.1f);
+	glVertex2f(0.1f, -0.1f);
+	glEnd();
+	
+	glPopMatrix();
 
-    // Building 10 
-    glPushMatrix();
-    glTranslatef(0.7f, -0.8f, 0.0f);  
-    glScalef(0.14f, 1.0f, 1.0f);     
-    glColor3f(0.6f, 0.6f, 0.6f);      
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
 
-    // Building 11 
-    glPushMatrix();
-    glTranslatef(0.85f, -0.9f, 0.0f);  
-    glScalef(0.15f, 1.0f, 1.0f);     
-    glColor3f(0.5f, 0.5f, 0.5f);      
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
+    // Building 10
+	glPushMatrix();
+	glTranslatef(0.7f, -0.7f, 0.0f); 
+	glScalef(0.17f, 0.6f, 1.0f);       
+	glColor3f(0.5f, 0.5f, 0.5f);      
+	
+	// Building structure
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	
+	// Adding yellow windows
+	glColor3f(0.8f, 0.9f, 1.0f); // Light blue color for windows
+	
+	// First row of windows
+	// Window 1
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.9f);
+	glVertex2f(-0.1f, -0.9f);
+	glVertex2f(-0.1f, -0.7f);
+	glVertex2f(-0.3f, -0.7f);
+	glEnd();
+	
+	// Window 2
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.9f);
+	glVertex2f(0.3f, -0.9f);
+	glVertex2f(0.3f, -0.7f);
+	glVertex2f(0.1f, -0.7f);
+	glEnd();
+	
+	// Second row of windows
+	// Window 3
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.6f);
+	glVertex2f(-0.1f, -0.6f);
+	glVertex2f(-0.1f, -0.4f);
+	glVertex2f(-0.3f, -0.4f);
+	glEnd();
+	
+	// Window 4
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.6f);
+	glVertex2f(0.3f, -0.6f);
+	glVertex2f(0.3f, -0.4f);
+	glVertex2f(0.1f, -0.4f);
+	glEnd();
+	
+	// Third row of windows
+	// Window 5
+	glBegin(GL_QUADS);
+	glVertex2f(-0.3f, -0.3f);
+	glVertex2f(-0.1f, -0.3f);
+	glVertex2f(-0.1f, -0.1f);
+	glVertex2f(-0.3f, -0.1f);
+	glEnd();
+	
+	// Window 6
+	glBegin(GL_QUADS);
+	glVertex2f(0.1f, -0.3f);
+	glVertex2f(0.3f, -0.3f);
+	glVertex2f(0.3f, -0.1f);
+	glVertex2f(0.1f, -0.1f);
+	glEnd();
 
-    // Building 12 
-    glPushMatrix();
-    glTranslatef(1.0f, -0.7f, 0.0f);  
-    glScalef(0.18f, 1.0f, 1.0f);     
-    glColor3f(0.7f, 0.7f, 0.7f);      
-    glBegin(GL_QUADS);
-    glVertex2f(-0.5f, -1.0f);
-    glVertex2f(0.5f, -1.0f);
-    glVertex2f(0.5f, 0.0f);
-    glVertex2f(-0.5f, 0.0f);
-    glEnd();
-    glPopMatrix();
+	glPopMatrix();
+
+    // Building 11
+	glPushMatrix();
+	glTranslatef(0.28f, -0.4f, 0.0f);  
+	glScalef(0.15f, 0.7f, 1.0f);       
+	glColor3f(0.4f, 0.4f, 0.4f); // Dark gray for the building
+	
+	// Building structure
+	glBegin(GL_QUADS);
+	glVertex2f(-0.5f, -1.0f);
+	glVertex2f(0.5f, -1.0f);
+	glVertex2f(0.5f, 0.0f);
+	glVertex2f(-0.5f, 0.0f);
+	glEnd();
+	
+	// Adding yellow windows
+	glColor3f(0.8f, 0.9f, 1.0f); // Light blue color for windows
+	
+	// First row of windows 
+	// Window 1
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.9f); 
+	glVertex2f(-0.15f, -0.9f);
+	glVertex2f(-0.15f, -0.7f); 
+	glVertex2f(-0.35f, -0.7f);
+	glEnd();
+	
+	// Window 2
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.9f); 
+	glVertex2f(0.35f, -0.9f);
+	glVertex2f(0.35f, -0.7f); 
+	glVertex2f(0.15f, -0.7f);
+	glEnd();
+	
+	// Second row of windows 
+	// Window 3
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.6f); 
+	glVertex2f(-0.15f, -0.6f);
+	glVertex2f(-0.15f, -0.4f); 
+	glVertex2f(-0.35f, -0.4f);
+	glEnd();
+	
+	// Window 4
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.6f); 
+	glVertex2f(0.35f, -0.6f);
+	glVertex2f(0.35f, -0.4f); 
+	glVertex2f(0.15f, -0.4f);
+	glEnd();
+	
+	// Third row of windows
+	// Window 5
+	glBegin(GL_QUADS);
+	glVertex2f(-0.35f, -0.3f);
+	glVertex2f(-0.15f, -0.3f);
+	glVertex2f(-0.15f, -0.1f); 
+	glVertex2f(-0.35f, -0.1f);
+	glEnd();
+	
+	// Window 6
+	glBegin(GL_QUADS);
+	glVertex2f(0.15f, -0.3f); 
+	glVertex2f(0.35f, -0.3f);
+	glVertex2f(0.35f, -0.1f); 
+	glVertex2f(0.15f, -0.1f);
+	glEnd();
+	
+	glPopMatrix();
 
     glPopMatrix();
 }
+
 
 
 
@@ -638,8 +1218,8 @@ void update(int value) {
     if (cloudX < -4.5f) cloudX = 1.2f;
     
    // Move the buildings
-	moveXBuildings -= 0.025f; 
-	if (moveXBuildings < -1.98f) {
+	moveXBuildings -= 0.02f; 
+	if (moveXBuildings < -2.0f) {
 	    moveXBuildings = 1.65f;
 	}
     glutPostRedisplay();
@@ -663,15 +1243,15 @@ void mouse(int button, int state, int x, int y) {
 
     // Simulate mouse wheel using mouse buttons
     if (button == 3 && state == GLUT_DOWN) { // Scroll up (usually button 3)
-        sunScale += 0.1f;
-        if (sunScale > 2.0f) sunScale = 2.0f; // Limit the maximum size
+        rocketScale += 0.05f;
+        if (rocketScale > 2.5f) rocketScale = 2.5f; // Limit the maximum size
     }
     if (button == 4 && state == GLUT_DOWN) { // Scroll down (usually button 4)
-        sunScale -= 0.1f;
-        if (sunScale < 0.5f) sunScale = 0.5f; // Limit the minimum size
+        rocketScale -= 0.1f;
+        if (rocketScale < 1.0f) rocketScale = 1.0f; // Limit the minimum size
     }
 
-    glutPostRedisplay(); // Request a redraw to update the sun scale
+    glutPostRedisplay(); // Request a redraw to update the rocket scale
 }
 
 void initVBO() {
